@@ -28,38 +28,37 @@ jobs:
       - name: Grant Permission to Execute
         run: chmod +x gradlew
 
-#      - name: Build & Test Project
-#        run: ./gradlew assemble
+      #      - name: Build & Test Project
+      #        run: ./gradlew assemble
 
-      - name: Uploading Patch Build to playstore.
+      - name: Bumping Patch Version
         if: "contains(github.event.head_commit.message, 'Release Patch Build')"
         run: |
-          ./gradlew getPatchVersion > ${{ github.workspace }}/qa-notes.txt
-          echo ${{ steps.vars.outputs.going_version_name }}
+          ./gradlew getPatchversion
           ./gradlew bumpPatchVersion
-          git add .
-          git commit -m " ${{ steps.vars.outputs.going_version_name }} Patch Version Bumped"
-          git push
 
-      - name: Uploading Minor Build to playstore.
+      - name: Bumping Minor Version.
         if: "contains(github.event.head_commit.message, 'Release Minor Build')"
         run: |
-          echo "::set-output name=going_version_name::$(./gradlew getMinorVersion)\n"
-          echo ${{ steps.vars.outputs.going_version_name }}
+          ./gradlew getMinorversion
           ./gradlew bumpMinorVersion
-           git add .
-           git commit -m " ${{ steps.vars.outputs.going_version_name }} Minor Version Bumped"
-           git push
 
-      - name: Uploading Major Build to playstore.
+      - name: Bumping Major Version.
         if: "contains(github.event.head_commit.message, 'Release Major Build')"
         run: |
-          echo "::set-output name=going_version_name::$(./gradlew getMajorVersion)\n"
-          echo ${{ steps.vars.outputs.going_version_name }}
+          ./gradlew getMajorversion
           ./gradlew bumpMajorVersion
-           git add .
-           git commit -m " ${{ steps.vars.outputs.going_version_name }} Major Version Bumped"
-           git push
+
+      - uses: pCYSl5EDgo/cat@master
+        id: releasing_version
+        with:
+          path: ${{ github.workspace }}/temp.txt
+
+      - name: Build Released ${{ steps.releasing_version.outputs.text }} Version to playstore.
+        run: |
+          git add .
+          git commit -m " ${{ steps.releasing_version.outputs.text }} Version Bumped"
+          git push
 
 #      - name: Build & Test Project
 #        run: ./gradlew assemble

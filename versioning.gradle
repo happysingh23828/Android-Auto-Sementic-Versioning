@@ -106,7 +106,9 @@ tasks.addRule("Pattern: get<TYPE>Version") { String taskName ->
                 version."get$type"()
 
                 String newVersionName = version.getName()
-                println "$newVersionName"
+                println "Build Version saved to Temp.txt $newVersionName"
+
+                new File("temp.txt").text = "$newVersionName"
             }
         }
     }

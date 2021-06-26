@@ -65,7 +65,7 @@ jobs:
           git add .
           git commit -m " ${{ steps.releasing_version.outputs.text }} Version Bumped"
           git push
-          git tag -a ${{ steps.releasing_version.outputs.text }} -m "${{ steps.releasing_notes.outputs.text }"
+          git tag -a ${{ steps.releasing_version.outputs.text }} -m "${{ steps.releasing_notes.outputs.text }}"
           git push --tags origin feature/sem-ver
 
 #      - name: Build & Test Project

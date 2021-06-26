@@ -34,19 +34,19 @@ jobs:
       - name: Bumping Patch Version
         if: "contains(github.event.head_commit.message, 'Release Patch Build')"
         run: |
-          ./gradlew getPatchversion
+          ./gradlew getPatchVersion
           ./gradlew bumpPatchVersion
 
       - name: Bumping Minor Version.
         if: "contains(github.event.head_commit.message, 'Release Minor Build')"
         run: |
-          ./gradlew getMinorversion
+          ./gradlew getMinorVersion
           ./gradlew bumpMinorVersion
 
       - name: Bumping Major Version.
         if: "contains(github.event.head_commit.message, 'Release Major Build')"
         run: |
-          ./gradlew getMajorversion
+          ./gradlew getMajorVersion
           ./gradlew bumpMajorVersion
 
       - uses: pCYSl5EDgo/cat@master

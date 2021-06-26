@@ -64,7 +64,7 @@ tasks.addRule("Pattern: bump<TYPE>Version") { String taskName ->
                 println "$oldVersionName ($oldVersionCode) → $newVersionName ($newVersionCode)"
 
                 def updated = buildFile.getText()
-                updated = updated.replaceFirst("versionName '$oldVersionName'", "versionName '$newVersionName'")
+                updated = updated.replaceFirst("versionName \"$oldVersionName\"", "versionName \"$newVersionName\"")
                 updated = updated.replaceFirst("versionCode $oldVersionCode", "versionCode $newVersionCode")
 
                 buildFile.setText(updated)

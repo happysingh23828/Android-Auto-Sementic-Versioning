@@ -28,38 +28,54 @@ jobs:
       - name: Grant Permission to Execute
         run: chmod +x gradlew
 
-      - name: Updating Patch Build Version
-        if: "contains(github.event.head_commit.message, 'Release Patch Build')"
-        run: |
-         ./gradlew bumpPatchVersion
-          git add .
-          git commit -m "Patch Version Bumped"
-          git push
+      #      - name: Build & Test Project
+      #        run: ./gradlew assemble
 
-      - name: Updating Minor Build Version
-        if: "contains(github.event.head_commit.message, 'Release Minor Build')"
+      - name: Bumping Patch Version
+        if: "contains(github.event.head_commit.message, '[release-patch]')"
         run: |
+          ./gradlew getPatchVersion
+          ./gradlew bumpPatchVersion
+
+      - name: Bumping Minor Version.
+        if: "contains(github.event.head_commit.message, '[release-minor]')"
+        run: |
+          ./gradlew getMinorVersion
           ./gradlew bumpMinorVersion
-           git add .
-           git commit -m "Minor Version Bumped"
-           git push
 
-      - name: Updating Major Build Version
-        if: "contains(github.event.head_commit.message, 'Release Major Build')"
+      - name: Bumping Major Version.
+        if: "contains(github.event.head_commit.message, '[release-major]')"
         run: |
+          ./gradlew getMajorVersion
           ./gradlew bumpMajorVersion
-           git add .
-           git commit -m "Major Version Bumped"
-           git push
 
-      - name: Build & Test Project
-        run: ./gradlew assemble
-
-      - name: Build debug APK
-        run: bash ./gradlew assembleDebug --stacktrace #build apk according to you
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v2-preview
+      - uses: pCYSl5EDgo/cat@master
+        id: releasing_version
         with:
-          name: app
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: ${{ github.workspace }}/temp.txt
+
+      - uses: pCYSl5EDgo/cat@master
+        id: releasing_notes
+        with:
+          path: ${{ github.workspace }}/release-notes.txt
+
+
+      - name: Build Released ${{ steps.releasing_version.outputs.text }} Version to playstore.
+        run: |
+          git add .
+          git commit -m " ${{ steps.releasing_version.outputs.text }} Version Bumped"
+          git push
+          git tag -a ${{ steps.releasing_version.outputs.text }} -m "  ${{ steps.releasing_notes.outputs.text }}"
+          git push --tags origin master
+
+#      - name: Build & Test Project
+#        run: ./gradlew assemble
+#
+#      - name: Build debug APK
+#        run: bash ./gradlew assembleDebug --stacktrace #build apk according to you
+#
+#      - name: Upload APK
+#        uses: actions/upload-artifact@v2-preview
+#        with:
+#          name: app
+#          path: app/build/outputs/apk/debug/app-debug.apk

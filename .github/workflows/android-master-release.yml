@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: Run Unit Test and Build Project
+    name: Auto increament versionCode, versionName and build apk.
     runs-on: ubuntu-latest
 
     steps:
@@ -25,15 +25,24 @@ jobs:
 
       - name: Updating Patch Build Version
         if: "contains(github.event.head_commit.message, 'Release Patch Build')"
-        run: ./gradlew bumpPatchVersion
+        run: |
+         ./gradlew bumpPatchVersion
+          git add .
+          git commit -m "Patch Version Bumped"
 
       - name: Updating Patch Build Version
         if: "contains(github.event.head_commit.message, 'Release Minor Build')"
-        run: ./gradlew bumpMinorVersion
+        run: |
+          ./gradlew bumpMinorVersion
+           git add .
+           git commit -m "Minor Version Bumped"
 
       - name: Updating Patch Build Version
         if: "contains(github.event.head_commit.message, 'Release Major Build')"
-        run: ./gradlew bumpMajorVersion
+        run: |
+          ./gradlew bumpMajorVersion
+           git add .
+           git commit -m "Major Version Bumped"
 
       - name: Build & Test Project
         run: ./gradlew assemble

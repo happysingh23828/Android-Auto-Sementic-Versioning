@@ -4,11 +4,11 @@ name: Android CI
 on:
   push:
     branches:
-      - feature/sem-ver
+      - master
 
 jobs:
   build:
-    name: Auto increament versionCode, versionName and build apk.
+    name: Release Android apk on master merge.
     runs-on: ubuntu-latest
 
     steps:

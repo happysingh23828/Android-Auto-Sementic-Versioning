@@ -54,11 +54,19 @@ jobs:
         with:
           path: ${{ github.workspace }}/temp.txt
 
+      - uses: pCYSl5EDgo/cat@master
+        id: releasing_notes
+        with:
+          path: ${{ github.workspace }}/release-notes.txt
+
+
       - name: Build Released ${{ steps.releasing_version.outputs.text }} Version to playstore.
         run: |
           git add .
           git commit -m " ${{ steps.releasing_version.outputs.text }} Version Bumped"
           git push
+          git tag -a ${{ steps.releasing_version.outputs.text }} -m "${{ steps.releasing_notes.outputs.text }"
+          git push --tags origin feature/sem-ver
 
 #      - name: Build & Test Project
 #        run: ./gradlew assemble

@@ -34,7 +34,7 @@ jobs:
       - name: Uploading Patch Build to playstore.
         if: "contains(github.event.head_commit.message, 'Release Patch Build')"
         run: |
-          echo "::set-output name=going_version_name::$(./gradlew getPatchVersion)\n"
+          ./gradlew getPatchVersion > ${{ github.workspace }}/qa-notes.txt
           echo ${{ steps.vars.outputs.going_version_name }}
           ./gradlew bumpPatchVersion
           git add .

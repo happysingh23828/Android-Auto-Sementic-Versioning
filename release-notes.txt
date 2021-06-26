@@ -1,4 +1,4 @@
-**Here are the highlights of this release:**
+Here are the highlights of this release
  - File system watching is ready for production use
  - Declare the version of Java your build requires
  - Java 15 support

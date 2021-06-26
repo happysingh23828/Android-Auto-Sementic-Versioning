@@ -20,6 +20,11 @@ jobs:
         with:
           java-version: 1.8
 
+      - name: Setting Github Username and email from last commit
+        run: |
+          git config --local user.email "$(git log --format='%ae' HEAD^!)"
+          git config --local user.name "$(git log --format='%an' HEAD^!)"
+
       - name: Grant Permission to Execute
         run: chmod +x gradlew
 
@@ -30,14 +35,14 @@ jobs:
           git add .
           git commit -m "Patch Version Bumped"
 
-      - name: Updating Patch Build Version
+      - name: Updating Minor Build Version
         if: "contains(github.event.head_commit.message, 'Release Minor Build')"
         run: |
           ./gradlew bumpMinorVersion
            git add .
            git commit -m "Minor Version Bumped"
 
-      - name: Updating Patch Build Version
+      - name: Updating Major Build Version
         if: "contains(github.event.head_commit.message, 'Release Major Build')"
         run: |
           ./gradlew bumpMajorVersion

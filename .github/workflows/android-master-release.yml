@@ -35,30 +35,30 @@ jobs:
         if: "contains(github.event.head_commit.message, 'Release Patch Build')"
         run: |
           echo "::set-output name=going_version_name::$(./gradlew getPatchVersion)\n"
-          echo ${{ steps.vars.outputs.going_version_name }
+          echo ${{ steps.vars.outputs.going_version_name }}
           ./gradlew bumpPatchVersion
           git add .
-          git commit -m "${{ steps.vars.outputs.going_version_name }} Patch Version Bumped"
+          git commit -m " ${{ steps.vars.outputs.going_version_name }} Patch Version Bumped"
           git push
 
       - name: Uploading Minor Build to playstore.
         if: "contains(github.event.head_commit.message, 'Release Minor Build')"
         run: |
           echo "::set-output name=going_version_name::$(./gradlew getMinorVersion)\n"
-          echo ${{ steps.vars.outputs.going_version_name }
+          echo ${{ steps.vars.outputs.going_version_name }}
           ./gradlew bumpMinorVersion
            git add .
-           git commit -m "${{ steps.vars.outputs.going_version_name }} Minor Version Bumped"
+           git commit -m " ${{ steps.vars.outputs.going_version_name }} Minor Version Bumped"
            git push
 
       - name: Uploading Major Build to playstore.
         if: "contains(github.event.head_commit.message, 'Release Major Build')"
         run: |
           echo "::set-output name=going_version_name::$(./gradlew getMajorVersion)\n"
-          echo ${{ steps.vars.outputs.going_version_name }
+          echo ${{ steps.vars.outputs.going_version_name }}
           ./gradlew bumpMajorVersion
            git add .
-           git commit -m "${{ steps.vars.outputs.going_version_name }} Major Version Bumped"
+           git commit -m " ${{ steps.vars.outputs.going_version_name }} Major Version Bumped"
            git push
 
 #      - name: Build & Test Project

@@ -34,6 +34,7 @@ jobs:
          ./gradlew bumpPatchVersion
           git add .
           git commit -m "Patch Version Bumped"
+          git push
 
       - name: Updating Minor Build Version
         if: "contains(github.event.head_commit.message, 'Release Minor Build')"
@@ -41,6 +42,7 @@ jobs:
           ./gradlew bumpMinorVersion
            git add .
            git commit -m "Minor Version Bumped"
+           git push
 
       - name: Updating Major Build Version
         if: "contains(github.event.head_commit.message, 'Release Major Build')"
@@ -48,15 +50,16 @@ jobs:
           ./gradlew bumpMajorVersion
            git add .
            git commit -m "Major Version Bumped"
+           git push
 
-      - name: Build & Test Project
-        run: ./gradlew assemble
-
-      - name: Build debug APK
-        run: bash ./gradlew assembleDebug --stacktrace #build apk according to you
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v2-preview
-        with:
-          name: app
-          path: app/build/outputs/apk/debug/app-debug.apk
+#      - name: Build & Test Project
+#        run: ./gradlew assemble
+#
+#      - name: Build debug APK
+#        run: bash ./gradlew assembleDebug --stacktrace #build apk according to you
+#
+#      - name: Upload APK
+#        uses: actions/upload-artifact@v2-preview
+#        with:
+#          name: app
+#          path: app/build/outputs/apk/debug/app-debug.apk

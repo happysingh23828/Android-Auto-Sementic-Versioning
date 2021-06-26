@@ -1,5 +1,3 @@
-
-
 class Version {
 
     private int major
@@ -39,6 +37,29 @@ class Version {
         code += 1
     }
 
+    @SuppressWarnings("unused")
+    void getMajor() {
+        major += 1
+        minor = 0
+        patch = 0
+
+        code += 1
+    }
+
+    @SuppressWarnings("unused")
+    void getMinor() {
+        minor += 1
+        patch = 0
+
+        code += 1
+    }
+
+    @SuppressWarnings("unused")
+    void getPatch() {
+        patch += 1
+        code += 1
+    }
+
     String getName() { "$major.$minor.$patch" }
 
     int getCode() { code }
@@ -68,6 +89,24 @@ tasks.addRule("Pattern: bump<TYPE>Version") { String taskName ->
                 updated = updated.replaceFirst("versionCode $oldVersionCode", "versionCode $newVersionCode")
 
                 buildFile.setText(updated)
+            }
+        }
+    }
+}
+
+tasks.addRule("Pattern: get<TYPE>Version") { String taskName ->
+    if (taskName.matches("get(Major|Minor|Patch)Version")) {
+        task(taskName) {
+            doLast {
+                String type = (taskName - 'get' - 'Version')
+                int oldVersionCode = android.defaultConfig.versionCode
+                String oldVersionName = android.defaultConfig.versionName
+
+                version = new Version(oldVersionCode, oldVersionName)
+                version."get$type"()
+
+                String newVersionName = version.getName()
+                println "$newVersionName"
             }
         }
     }

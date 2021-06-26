@@ -4,7 +4,7 @@ name: Android CI
 on:
   push:
     branches:
-      - master
+      - feature/sem-ver
 
 jobs:
   build:
@@ -28,38 +28,44 @@ jobs:
       - name: Grant Permission to Execute
         run: chmod +x gradlew
 
-      - name: Updating Patch Build Version
+#      - name: Build & Test Project
+#        run: ./gradlew assemble
+
+      - name: Uploading Patch Build to playstore.
         if: "contains(github.event.head_commit.message, 'Release Patch Build')"
         run: |
-         ./gradlew bumpPatchVersion
+          echo "::set-output name=going_version_name::$(./gradlew getPatchVersion)\n"
+          ./gradlew bumpPatchVersion
           git add .
-          git commit -m "Patch Version Bumped"
+          git commit -m "${{ steps.vars.outputs.going_version_name }} Patch Version Bumped"
           git push
 
-      - name: Updating Minor Build Version
+      - name: Uploading Minor Build to playstore.
         if: "contains(github.event.head_commit.message, 'Release Minor Build')"
         run: |
+          echo "::set-output name=going_version_name::$(./gradlew getMinorVersion)\n"
           ./gradlew bumpMinorVersion
            git add .
-           git commit -m "Minor Version Bumped"
+           git commit -m "${{ steps.vars.outputs.going_version_name }} Minor Version Bumped"
            git push
 
-      - name: Updating Major Build Version
+      - name: Uploading Major Build to playstore.
         if: "contains(github.event.head_commit.message, 'Release Major Build')"
         run: |
+          echo "::set-output name=going_version_name::$(./gradlew getMajorVersion)\n"
           ./gradlew bumpMajorVersion
            git add .
-           git commit -m "Major Version Bumped"
+           git commit -m "${{ steps.vars.outputs.going_version_name }} Major Version Bumped"
            git push
 
-      - name: Build & Test Project
-        run: ./gradlew assemble
-
-      - name: Build debug APK
-        run: bash ./gradlew assembleDebug --stacktrace #build apk according to you
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v2-preview
-        with:
-          name: app
-          path: app/build/outputs/apk/debug/app-debug.apk
+#      - name: Build & Test Project
+#        run: ./gradlew assemble
+#
+#      - name: Build debug APK
+#        run: bash ./gradlew assembleDebug --stacktrace #build apk according to you
+#
+#      - name: Upload APK
+#        uses: actions/upload-artifact@v2-preview
+#        with:
+#          name: app
+#          path: app/build/outputs/apk/debug/app-debug.apk

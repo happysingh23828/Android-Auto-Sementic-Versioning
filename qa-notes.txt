@@ -1,0 +1,25 @@
+Downloading https://services.gradle.org/distributions/gradle-6.7.1-bin.zip
+..................................................................................................
+Unzipping /home/runner/.gradle/wrapper/dists/gradle-6.7.1-bin/bwlcbys1h7rz3272sye1xwiv6/gradle-6.7.1-bin.zip to /home/runner/.gradle/wrapper/dists/gradle-6.7.1-bin/bwlcbys1h7rz3272sye1xwiv6
+Set executable permissions for: /home/runner/.gradle/wrapper/dists/gradle-6.7.1-bin/bwlcbys1h7rz3272sye1xwiv6/gradle-6.7.1/bin/gradle
+
+Welcome to Gradle 6.7.1!
+
+Here are the highlights of this release:
+ - File system watching is ready for production use
+ - Declare the version of Java your build requires
+ - Java 15 support
+
+For more details see https://docs.gradle.org/6.7.1/release-notes.html
+
+Starting a Gradle Daemon (subsequent builds will be faster)
+WARNING:: Please remove usages of `jcenter()` Maven repository from your build scripts and migrate your build to other Maven repositories.
+This repository is deprecated and it will be shut down in the future.
+See http://developer.android.com/r/tools/jcenter-end-of-service for more information.
+Currently detected usages in: root project 'Android-Auto-Sementic-Versioning', project ':app'
+
+> Task :app:getPatchVersion
+1.0.4
+
+BUILD SUCCESSFUL in 33s
+1 actionable task: 1 executed
